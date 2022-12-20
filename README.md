@@ -7,6 +7,7 @@ python3 main.py {operation} {extension}
 
 ## Installation
 git clone https://github.com/chevybeef/nvim-config-move.git
+
 cd nvim-config-move
 
 ## Examples
