@@ -7,7 +7,9 @@ python3 main.py {operation} {extension}
 ## Examples
 
 python3 main.py move bak
+
 python3 main.py restore bak
 
 note: the dot before the extension is not required
+
 note: the script will abort if it doesn't find all 4 directories (make them manually if required)
