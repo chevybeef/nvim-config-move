@@ -33,7 +33,7 @@ if operation not in supported_operations:
 print(f"This is a '{operation}' operation using extension '{extension}'")
 
 # if using windows: Move-Item $env:LOCALAPPDATA\test $env:LOCALAPPDATA\test.bak
-user_directories = ["~/.config/nvim", "~/.local/share/nvim", "~/.local/state/nvim/", "~/.cache/nvim"]
+user_directories = ["~/.config/nvim", "~/.local/share/nvim", "~/.local/state/nvim", "~/.cache/nvim"]
 
 # if this is a move operation, create the list of directories to move to
 from_directories = []
