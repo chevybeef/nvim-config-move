@@ -3,15 +3,13 @@ A python script to move the current neovim configuration out of the way in order
 
 Imaginative extensions such as below could be used (without the period):
 
-.bak            # backup
-
-.b4anv          # before astronvim
-
-.mine           # your config
-
-.distrotube     # distrotube's config
-
-.kickstart      # kickstart config
+|   EXTENSION   |       DESCRIPTION       | 
+|--------------:|-------------------------|
+|.bak           | vanilla backup          |
+|.b4anv         | before astronvim        |
+|.mine          | your config             |
+|.distrotube    | distrotube's config     |
+|.kickstart     | kickstart config        |
 
 All 4 of the nvim config directories must exists or the script will abort:
 
