@@ -17,7 +17,7 @@ All 4 of the nvim config directories must exists or the script will abort:
 
 ~/.local/share/nvim
 
-~/.local/state/nvim/
+~/.local/state/nvim
 
 ~/.cache/nvim
 
