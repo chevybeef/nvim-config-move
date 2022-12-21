@@ -7,11 +7,11 @@ import os
 # usage: config.py "operation" "extension"
 # operation can be either "move" or "restore"
 
-def directory_exist(directories) -> bool:
+def directories_exist(directories) -> bool:
+    number_of_paths = 0
     for directory in directories:
-        if os.path.exists(directory):
-            return True
-    return False
+        number_of_paths += int(os.path.exists(directory))
+    return number_of_paths == len(directories)
 
 def rename_directories(from_directories, to_directories):
     for index, _ in enumerate(from_directories):
@@ -46,11 +46,11 @@ for index, directory in enumerate(user_directories):
         to_directories.append(os.path.expanduser(user_directories[index]))
         from_directories.append(to_directories[index] + extension)
 # if any of the from directories don't exist then abort
-if not directory_exist(from_directories):
+if not directories_exist(from_directories):
     print(f"{from_directories} doesn't exist, aborting.")
     exit(1)
 # if any of the to_directories already exist then abort
-if directory_exist(to_directories):
+if directories_exist(to_directories):
     print(f"{to_directories} already exists, aborting.")
     exit(1)
 print(f"{from_directories} will be moved to \n{to_directories}")
