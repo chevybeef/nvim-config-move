@@ -1,11 +1,12 @@
+import os
 import shutil
 import sys
-import os
 
 # this program moves config folders out the way in order to "start over configuring neovim"
 # it can also restore from a previous move operation
 # usage: config.py "operation" "extension"
 # operation can be either "move" or "restore"
+
 
 def directories_exist(directories) -> bool:
     number_of_paths = 0
@@ -13,27 +14,39 @@ def directories_exist(directories) -> bool:
         number_of_paths += int(os.path.exists(directory))
     return number_of_paths == len(directories)
 
+
 def rename_directories(from_directories, to_directories):
     for index, _ in enumerate(from_directories):
         shutil.move(from_directories[index], to_directories[index])
+
 
 arguments_passed = len(sys.argv)
 print("Number of arguments passed: ", arguments_passed)
 if arguments_passed != 3:
     print(f"Usage: python3 {sys.argv[0]} operation extension")
-    exit(1) 
+    exit(1)
 
 operation = sys.argv[1]
 extension = "." + sys.argv[2]
 supported_operations = ["move", "restore"]
 if operation not in supported_operations:
-    print(f"Operation '{operation}' not supported. Only {supported_operations} implemented.") 
+    print(
+        f"Operation '{operation}' not supported. Only {supported_operations} implemented."
+    )
     exit(1)
 
 print(f"This is a '{operation}' operation using extension '{extension}'")
 
-# if using windows: Move-Item $env:LOCALAPPDATA\test $env:LOCALAPPDATA\test.bak
-user_directories = ["~/.config/nvim", "~/.local/share/nvim", "~/.local/state/nvim", "~/.cache/nvim"]
+if sys.platform == "win32":
+    user_directories = [os.getenv(
+        'LOCALAPPDATA') + '\\nvim', os.getenv('LOCALAPPDATA') + '\\nvim-data']
+else:
+    user_directories = [
+        "~/.config/nvim",
+        "~/.local/share/nvim",
+        "~/.local/state/nvim",
+        "~/.cache/nvim",
+    ]
 
 # if this is a move operation, create the list of directories to move to
 from_directories = []
@@ -58,4 +71,3 @@ if input("Proceed [y/N]?") == "y":
     rename_directories(from_directories, to_directories)
 else:
     print("Okay, aborting...")
-
