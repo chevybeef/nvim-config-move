@@ -23,7 +23,7 @@ All 4 of the nvim config directories must exists or the script will abort:
 
 You could create any empty directories manually if they don't exist.
 
-Works on macOS and Linux.
+Works on macOS, Linux and Windows.
 
 ## Installation
 
