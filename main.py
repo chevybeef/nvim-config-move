@@ -2,10 +2,13 @@ import os
 import shutil
 import sys
 
-# this program moves config folders out the way in order to "start over configuring neovim"
-# it can also restore from a previous move operation
-# usage: config.py "operation" "extension"
-# operation can be either "move" or "restore"
+'''
+this program moves nvim config folders out the way in order to
+"start over configuring neovim"
+it can also restore from a previous move operation
+usage: config.py "operation" "extension"
+operation can be either "move" or "restore"
+'''
 
 
 def directories_exist(directories) -> bool:
@@ -31,7 +34,8 @@ extension = "." + sys.argv[2]
 supported_operations = ["move", "restore"]
 if operation not in supported_operations:
     print(
-        f"Operation '{operation}' not supported. Only {supported_operations} implemented."
+        f"Operation '{operation}' not supported. \
+        Only {supported_operations} implemented."
     )
     exit(1)
 
