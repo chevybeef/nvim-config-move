@@ -16,7 +16,7 @@
             ],
             "args": [
                 "move",
-                "bak"
+                "lazy"
             ]
         }
     ]

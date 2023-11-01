@@ -11,9 +11,11 @@ operation can be either "move" or "restore"
 '''
 
 
-def directories_exist(directories) -> bool:
+def directories_exist(directories, create_if_not_exists) -> bool:
     number_of_paths = 0
     for directory in directories:
+        if create_if_not_exists and not os.path.exists(directory):
+            os.makedirs(directory)
         number_of_paths += int(os.path.exists(directory))
     return number_of_paths == len(directories)
 
@@ -62,12 +64,11 @@ for index, directory in enumerate(user_directories):
     if operation == "restore":
         to_directories.append(os.path.expanduser(user_directories[index]))
         from_directories.append(to_directories[index] + extension)
-# if any of the from directories don't exist then abort
-if not directories_exist(from_directories):
-    print(f"{from_directories} doesn't exist, aborting.")
-    exit(1)
+# if any of the from directories don't exist then create them
+directories_exist(from_directories, True)
+
 # if any of the to_directories already exist then abort
-if directories_exist(to_directories):
+if directories_exist(to_directories, False):
     print(f"{to_directories} already exists, aborting.")
     exit(1)
 print(f"{from_directories} will be moved to \n{to_directories}")
