@@ -25,15 +25,15 @@ def rename_directories(from_directories, to_directories):
         shutil.move(from_directories[index], to_directories[index])
 
 
+supported_operations = ["move", "restore"]
 arguments_passed = len(sys.argv)
 print("Number of arguments passed: ", arguments_passed)
 if arguments_passed != 3:
-    print(f"Usage: python3 {sys.argv[0]} operation extension")
+    print(f"Usage: python3 {sys.argv[0]} {supported_operations} extension")
     exit(1)
 
 operation = sys.argv[1]
 extension = "." + sys.argv[2]
-supported_operations = ["move", "restore"]
 if operation not in supported_operations:
     print(
         f"Operation '{operation}' not supported. \
