@@ -74,7 +74,7 @@ if directories_exist(to_directories, False):
     print(f"{to_directories} already exists, aborting.")
     exit(1)
 print(f"{from_directories} will be moved to \n{to_directories}")
-if input("Proceed [y/N]?") == "y":
+if input("Proceed [y/N] ") == "y":
     rename_directories(from_directories, to_directories)
 else:
     print("Okay, aborting...")
