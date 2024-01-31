@@ -3,14 +3,29 @@
 import os
 import shutil
 import sys
+import psutil
 
 '''
 this program moves nvim config folders out the way in order to
 "start over configuring neovim"
 it can also restore from a previous move operation
-usage: config.py "operation" "extension"
-operation can be either "move" or "restore"
+or swap to another configuration
 '''
+
+if sys.platform == "win32":
+    user_directories = [
+        os.getenv('LOCALAPPDATA') + '\\nvim',
+        os.getenv('LOCALAPPDATA') + '\\nvim-data'
+    ]
+    nvim_process = "nvim.exe"
+else:
+    user_directories = [
+        "~/.config/nvim",
+        "~/.local/share/nvim",
+        "~/.local/state/nvim",
+        "~/.cache/nvim",
+    ]
+    nvim_process = "nvim"
 
 
 def directories_exist(directories, create_if_not_exists) -> bool:
@@ -25,56 +40,78 @@ def directories_exist(directories, create_if_not_exists) -> bool:
 def rename_directories(from_directories, to_directories):
     for index, _ in enumerate(from_directories):
         shutil.move(from_directories[index], to_directories[index])
+        print(from_directories[index], to_directories[index])
 
 
-supported_operations = ["move", "restore"]
-arguments_passed = len(sys.argv)
-print("Number of arguments passed: ", arguments_passed)
-if arguments_passed != 3:
-    print(f"Usage: python3 {sys.argv[0]} {supported_operations} extension")
+for process in psutil.process_iter(['name']):
+    if process.info['name'] == nvim_process:
+        print("Neovim is running, best to exit before continuing.")
+        exit(1)
+
+
+supported_operations = ["move", "restore", "change"]
+
+
+def usage():
+    print(f"Usage: python3 {sys.argv[0]} {
+        supported_operations} [to_extension, from_extension]")
     exit(1)
+
+
+arguments_passed = len(sys.argv)
+if arguments_passed < 2 or arguments_passed > 4:
+    usage()
 
 operation = sys.argv[1]
-extension = "." + sys.argv[2]
-if operation not in supported_operations:
-    print(
-        f"Operation '{operation}' not supported. \
-        Only {supported_operations} implemented."
-    )
-    exit(1)
+if (operation == "move" or operation == "restore") and arguments_passed != 3:
+    usage()
 
-print(f"This is a '{operation}' operation using extension '{extension}'")
+if operation == "change" and arguments_passed != 4:
+    usage()
 
-if sys.platform == "win32":
-    user_directories = [os.getenv(
-        'LOCALAPPDATA') + '\\nvim', os.getenv('LOCALAPPDATA') + '\\nvim-data']
+to_extension = "." + sys.argv[2]
+from_extension = to_extension
+if arguments_passed == 4:
+    from_extension = "." + sys.argv[3]
+    print(f"This is a '{operation}' operation using extensions '{
+        to_extension}, {from_extension}'")
 else:
-    user_directories = [
-        "~/.config/nvim",
-        "~/.local/share/nvim",
-        "~/.local/state/nvim",
-        "~/.cache/nvim",
-    ]
+    print(f"This is a '{operation}' operation using extensions '{
+        to_extension}'")
 
-# if this is a move operation, create the list of directories to move to
 from_directories = []
 to_directories = []
 for index, directory in enumerate(user_directories):
-    if operation == "move":
+    if operation == "move" or operation == "change":
         from_directories.append(os.path.expanduser(directory))
-        to_directories.append(from_directories[index] + extension)
-    if operation == "restore":
-        to_directories.append(os.path.expanduser(user_directories[index]))
-        from_directories.append(to_directories[index] + extension)
-# if any of the from directories don't exist then create them
-directories_exist(from_directories, True)
+        to_directories.append(from_directories[index] + to_extension)
 
-# if any of the to_directories already exist then abort
-if directories_exist(to_directories, False):
-    print(f"{to_directories} already exists, aborting.")
+for index, directory in enumerate(user_directories):
+    if operation == "restore" or operation == "change":
+        from_directories.append(os.path.expanduser(
+            user_directories[index]) + from_extension)
+        to_directories.append(os.path.expanduser(user_directories[index]))
+
+if not directories_exist(from_directories, False):
+    print(f"{from_directories} from must exist, aborting.")
     exit(1)
-print(f"{from_directories} will be moved to \n{to_directories}")
+if operation == "change":
+    if directories_exist(to_directories[0:4], False):
+        print(f"{to_directories[0:4]} to must not exist, aborting.")
+        exit(1)
+else:
+    if directories_exist(to_directories, False):
+        print(f"{to_directories} to must not exist, aborting.")
+        exit(1)
+
+print("These directories:")
+for fd in from_directories:
+    print(f"{fd}")
+print("Will be renamed to this:")
+for td in to_directories:
+    print(f"{td}")
+
 if input("Proceed [y/N] ") == "y":
     rename_directories(from_directories, to_directories)
 else:
-    print("Okay, aborting...")
+    print("Okay, aborting, nothing has been changed.")

@@ -14,9 +14,18 @@
             "purpose": [
                 "debug-in-terminal"
             ],
+            // "args": [
+            //     "move",
+            //     "lazyvim"
+            // ]
+            // "args": [
+            //     "restore",
+            //     "kickstart"
+            // ]
             "args": [
-                "move",
-                "lazy"
+                "change",
+                "lazyvim",
+                "kickstart"
             ]
         }
     ]
