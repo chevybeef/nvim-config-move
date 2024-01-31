@@ -62,21 +62,21 @@ arguments_passed = len(sys.argv)
 if arguments_passed < 2 or arguments_passed > 4:
     usage()
 
-operation = sys.argv[1]
+operation = sys.argv[1].strip(" .")
 if (operation == "move" or operation == "restore") and arguments_passed != 3:
     usage()
 
 if operation == "change" and arguments_passed != 4:
     usage()
 
-to_extension = "." + sys.argv[2]
+to_extension = "." + sys.argv[2].strip(" .")
 from_extension = to_extension
 if arguments_passed == 4:
-    from_extension = "." + sys.argv[3]
+    from_extension = "." + sys.argv[3].strip(" .")
     print(f"This is a '{operation}' operation using extensions '{
         to_extension}, {from_extension}'")
 else:
-    print(f"This is a '{operation}' operation using extensions '{
+    print(f"This is a '{operation}' operation using extension '{
         to_extension}'")
 
 from_directories = []
