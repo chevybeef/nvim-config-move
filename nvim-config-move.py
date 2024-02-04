@@ -53,8 +53,7 @@ supported_operations = ["move", "restore", "change"]
 
 
 def usage():
-    print(f"Usage: python3 {sys.argv[0]} {
-        supported_operations} [to_extension, from_extension]")
+    print(f"Usage: python3 {sys.argv[0]} {supported_operations} [to_extension, from_extension]")
     exit(1)
 
 
@@ -72,12 +71,10 @@ if operation == "change" and arguments_passed != 4:
 to_extension = "." + sys.argv[2].strip(" .")
 from_extension = to_extension
 if arguments_passed == 4:
-    from_extension = "." + sys.argv[3].strip(" .")
-    print(f"This is a '{operation}' operation using extensions '{
-        to_extension}, {from_extension}'")
+    from_extension = "." + sys.argv[3]
+    print(f"This is a '{operation}' operation using extensions '{to_extension}, {from_extension}'")
 else:
-    print(f"This is a '{operation}' operation using extension '{
-        to_extension}'")
+    print(f"This is a '{operation}' operation using extensions '{to_extension}'")
 
 from_directories = []
 to_directories = []
