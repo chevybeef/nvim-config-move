@@ -31,6 +31,10 @@ Works on macOS, Linux and Windows.
 
 ## Installation
 
+install psutil dependency: 
+
+```pip install psutil```
+
 git clone https://github.com/chevybeef/nvim-config-move.git
 
 cd nvim-config-move
