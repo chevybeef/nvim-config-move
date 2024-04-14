@@ -5,17 +5,17 @@ import shutil
 import sys
 import psutil
 
-'''
+"""
 this program moves nvim config folders out the way in order to
 "start over configuring neovim"
 it can also restore from a previous move operation
 or swap to another configuration
-'''
+"""
 
 if sys.platform == "win32":
     user_directories = [
-        os.getenv('LOCALAPPDATA') + '\\nvim',
-        os.getenv('LOCALAPPDATA') + '\\nvim-data'
+        os.getenv("LOCALAPPDATA") + "\\nvim",
+        os.getenv("LOCALAPPDATA") + "\\nvim-data",
     ]
     nvim_process = "nvim.exe"
 else:
@@ -43,8 +43,8 @@ def rename_directories(from_directories, to_directories):
         print(from_directories[index], to_directories[index])
 
 
-for process in psutil.process_iter(['name']):
-    if process.info['name'] == nvim_process:
+for process in psutil.process_iter(["name"]):
+    if process.info["name"] == nvim_process:
         print("Neovim is running, best to exit before continuing.")
         exit(1)
 
@@ -53,7 +53,9 @@ supported_operations = ["move", "restore", "change"]
 
 
 def usage():
-    print(f"Usage: python3 {sys.argv[0]} {supported_operations} [to_extension, from_extension]")
+    print(
+        f"Usage: python3 {sys.argv[0]} {supported_operations} [to_extension, from_extension]"
+    )
     exit(1)
 
 
@@ -72,7 +74,9 @@ to_extension = "." + sys.argv[2].strip(" .")
 from_extension = to_extension
 if arguments_passed == 4:
     from_extension = "." + sys.argv[3]
-    print(f"This is a '{operation}' operation using extensions '{to_extension}, {from_extension}'")
+    print(
+        f"This is a '{operation}' operation using extensions '{to_extension}, {from_extension}'"
+    )
 else:
     print(f"This is a '{operation}' operation using extensions '{to_extension}'")
 
@@ -85,8 +89,9 @@ for index, directory in enumerate(user_directories):
 
 for index, directory in enumerate(user_directories):
     if operation == "restore" or operation == "change":
-        from_directories.append(os.path.expanduser(
-            user_directories[index]) + from_extension)
+        from_directories.append(
+            os.path.expanduser(user_directories[index]) + from_extension
+        )
         to_directories.append(os.path.expanduser(user_directories[index]))
 
 if not directories_exist(from_directories, True):
