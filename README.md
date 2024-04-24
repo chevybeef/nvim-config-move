@@ -43,7 +43,7 @@ chmod a+x nvim-config-move.py
 
 ## Usage
 
-```./nvim-config-move.py move, restore, change extension [extension]```
+```./nvim-config-move.py { move, restore, change } extension [extension]```
 
 ## Examples
 
