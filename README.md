@@ -58,6 +58,4 @@ chmod a+x nvim-config-move.py
 ./nvim-config-move.py change lazyvim kickstart
 ```
 
-note: the dot before the extension is not required
-
-note: the script will abort if it doesn't find all 4 directories (make them manually if required)
+note: the dot before the extension is not included
